@@ -48,7 +48,7 @@
     const link=event.target.closest('a[href^="#report-page-"]');
     if(link){
       const target=$(link.getAttribute('href').slice(1));
-      if(target){event.preventDefault();const chapter=target.closest('details');if(chapter)chapter.open=true;target.scrollIntoView({behavior:'smooth',block:'start'});target.tabIndex=-1;target.focus({preventScroll:true});}
+      if(target){event.preventDefault();if(window.OngyeolReader)window.OngyeolReader.reveal(target);const chapter=target.closest('details');if(chapter)chapter.open=true;target.scrollIntoView({behavior:'smooth',block:'start'});target.tabIndex=-1;target.focus({preventScroll:true});}
     }
   });
   $('results').addEventListener('change',event=>{if(event.target.id==='partner-unknown'){$('partner-time').disabled=event.target.checked;$('partner-time').required=!event.target.checked;}});
@@ -74,6 +74,7 @@
       if(!window.OngyeolEngine)throw new Error('계산 파일을 불러오지 못했습니다. engine.js 파일을 확인해주세요.');
       const input={date:$('date').value,time:$('time').value,unknown:$('unknown').checked,correction:$('correction').checked,equation:$('equation').checked,daySect:Number($('day-sect').value)||2,yunSect:Number($('yun-sect').value)||2,transitionChoice:$('transition-choice').value||'reject',longitude:Number($('city').value==='custom'?$('longitude').value:$('city').value),gender:Number($('gender').value)};
       const result=OngyeolEngine.calculate(input);
+      if(window.OngyeolReader)window.OngyeolReader.reset();
       if(!window.OngyeolExperience)throw new Error('개인 요약 화면 파일 experience.js를 확인해주세요.');
       if(!window.OngyeolStories)throw new Error('나의 이야기 파일 stories.js를 확인해주세요.');
       activeResult=result;activeInput=input;sinsalBase='day';showAllSinsal=false;selectedKeywords=[];
@@ -94,7 +95,7 @@
       if (!window.OngyeolReport) throw new Error('상세 리포트 파일을 불러오지 못했습니다. report.js 파일을 확인해주세요.');
       $('sinsal').innerHTML=window.OngyeolExperience.sinsal(result,sinsalBase,showAllSinsal);
       $('detailed-report').innerHTML=window.OngyeolReport.build(result,input);
-      tab('chart');$('results').hidden=false;$('results').scrollIntoView({behavior:'smooth',block:'start'});
+      tab('chart');$('results').hidden=false;if(window.OngyeolReader)window.OngyeolReader.mount(result);$('results').scrollIntoView({behavior:'smooth',block:'start'});
     } catch(error) {$('results').hidden=true;$('error').textContent=error.message||'분석 중 오류가 발생했습니다. 입력값을 확인해주세요.';}
   });
   const notices={privacy:['개인정보 안내','출생 정보는 현재 브라우저에서 계산하며 서버에 전송하거나 저장하지 않습니다. 화면을 새로고침하면 결과가 초기화됩니다. 인쇄하거나 PDF로 저장한 파일은 직접 관리해주세요.'],terms:['이용 안내','국내 출생자의 양력 생일을 기준으로 계산합니다. 전통 명리의 참고 정보이며 중요한 판단이나 미래 사건의 예측을 위한 자료가 아닙니다. 계산 관례와 학파에 따라 해석이 달라질 수 있습니다.'], 'launch-info':['출시 준비 안내','심화 리포트는 출시 준비 중입니다. 상품 범위와 가격은 전문가 검수 후 공개할 예정이며 현재 결제와 예약은 제공하지 않습니다. 기본 사주 분석과 인쇄는 무료로 이용할 수 있습니다.']};
