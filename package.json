@@ -1,0 +1,12 @@
+{
+  "name": "ongyeol-saju",
+  "version": "1.0.0",
+  "private": true,
+  "description": "온결 사주 — 브라우저에서 계산하는 전통문화 참고 리포트",
+  "scripts": {
+    "test": "node verify.cjs && node verify-domain.cjs && node verify-korean-time.cjs && node verify-interpretation.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

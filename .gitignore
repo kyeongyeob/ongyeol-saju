@@ -1,0 +1,8 @@
+.openai/
+node_modules/
+.env
+.env.*
+*.log
+*-preview.png
+tmp/
+output/
