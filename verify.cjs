@@ -9,7 +9,7 @@ for (const m of read('index.html').matchAll(/id="([^"]+)"/g)) nodes[m[1]] = {
 const tabs = ['chart','sinsal','flow'].map(name => Object.assign(nodes['nav-'+name],{dataset:{tab:name}}));
 const c = {Intl,Date,window:{print(){c.printed=true;}},document:{getElementById:id=>nodes[id],querySelectorAll:()=>tabs}};
 vm.createContext(c);
-for(const file of ['vendor/lunar.js','relations.js','korean-time.js','interpretation-rules.js','interpretation.js','engine.js','report-details.js','report.js','content-data.js','insights.js','stories.js','experience.js','app.js']) {
+for(const file of ['vendor/lunar.js','relations.js','korean-time.js','interpretation-rules.js','interpretation.js','engine.js','report-details.js','report.js','content-data.js','insights.js','stories.js','experience.js','reader.js','app.js']) {
   if(file==='engine.js') c.window.Solar=c.Solar;
   if(file==='app.js') c.OngyeolEngine=c.window.OngyeolEngine;
   vm.runInContext(read(file),c);
